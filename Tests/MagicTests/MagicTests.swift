@@ -51,10 +51,14 @@ final class AlphabetTests: XCTestCase {
         for i in 0..<types.count {
             for j in 0..<types.count {
                 XCTAssertEqual(i == j, types[i] == types[j])
+                XCTAssertEqual(i < j, types[i] < types[j])
             }
         }
         XCTAssertNotEqual(MediaType.MainType.ietf("app"), .extension("app"))
+        XCTAssertLessThan(MediaType.MainType.video, .ietf("app"))
+        XCTAssertLessThan(MediaType.MainType.ietf("app"), .ietf("nil"))
         XCTAssertNotEqual(MediaType.MainType.extension("x-app"), .ietf("x-app"))
+        XCTAssertLessThan(MediaType.MainType.ietf("app"), .extension("x-app"))
     }
     
     func testMimeType() throws {
@@ -94,8 +98,11 @@ final class AlphabetTests: XCTestCase {
         dynamicType.setParameter(value: "utf-16", for: "charset")
         dynamicType.setParameter(value: "urn:CreateCredential", for: "action")
         XCTAssertEqual(jsonType.description, "application/json; charset=utf-8")
+        XCTAssertEqual(jsonType.basicType, "application/json")
         XCTAssertEqual(soapType.description, "application/soap+xml; charset=utf-8; action=\"urn:CreateCredential\"")
+        XCTAssertEqual(soapType.basicType, "application/soap+xml")
         XCTAssertEqual(dynamicType.description, "application/soap+xml; charset=utf-16; action=\"urn:CreateCredential\"")
+        XCTAssertEqual(dynamicType.basicType, "application/soap+xml")
         dynamicType.setParameter(value: "urn:DeleteCredential", for: "action")
         XCTAssertEqual(dynamicType.description, "application/soap+xml; charset=utf-16; action=\"urn:DeleteCredential\"")
         dynamicType.removeParameter(for: "action")

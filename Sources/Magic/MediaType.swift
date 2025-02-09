@@ -21,10 +21,10 @@ let _ESCAPES = Set("\"\\".map { $0 })
 let _STRING_SPECIALS = CharacterSet(charactersIn: "\\\"")
 
 /// represents media types according to [RFC2045 Section 5.1](https://www.rfc-editor.org/rfc/rfc2045#section-5.1).
-public struct MediaType: Sendable, Hashable, Codable, CustomStringConvertible {
+public struct MediaType: Sendable, Hashable, Codable, Comparable, CustomStringConvertible {
     /// represents the type of a media type. Standard types according to
     /// [IANA media types, Feb. 4, 2025](https://www.iana.org/assignments/media-types/media-types.xhtml).
-    public enum MainType: Sendable, Hashable, Codable, CustomStringConvertible, ExpressibleByStringLiteral {
+    public enum MainType: Sendable, Hashable, Codable, Comparable, CustomStringConvertible, ExpressibleByStringLiteral {
         case application
         case audio
         case example
@@ -39,8 +39,7 @@ public struct MediaType: Sendable, Hashable, Codable, CustomStringConvertible {
         case ietf(String)
         case `extension`(String)
         
-        /// contains all simple, parameter-less cases
-        public static let standardTypes: Set<Self> = [
+        private static let _standardTypes: [Self] = [
             .application,
             .audio,
             .example,
@@ -53,7 +52,9 @@ public struct MediaType: Sendable, Hashable, Codable, CustomStringConvertible {
             .text,
             .video
         ]
-        
+        /// contains all simple, parameter-less cases
+        public static let standardTypes = Set(_standardTypes)
+
         public init(_ rawValue: String) {
             let literal = rawValue.lowercased()
             
@@ -103,6 +104,32 @@ public struct MediaType: Sendable, Hashable, Codable, CustomStringConvertible {
                 return false
             }
         }
+
+        public static func < (lhs: Self, rhs: Self) -> Bool {
+            guard lhs != rhs else { return false }
+            let leftIndex = _standardTypes.firstIndex(of: lhs) ?? _standardTypes.count
+            let rightIndex = _standardTypes.firstIndex(of: rhs) ?? _standardTypes.count
+            
+            if leftIndex < rightIndex {
+                return true
+            }
+            else if leftIndex > rightIndex {
+                return false
+            }
+            else {
+                switch (lhs, rhs) {
+                case (.ietf(_), .extension(_)):
+                    return true
+                case (.ietf(let left), .ietf(let right)):
+                    return left.caseInsensitiveCompare(right) == .orderedAscending
+                case (.extension(let left), .extension(let right)):
+                    return left.caseInsensitiveCompare(right) == .orderedAscending
+                default:
+                    return false
+                }
+            }
+        }
+        
 
         public func hash(into hasher: inout Hasher) {
             hasher.combine(description.lowercased())
@@ -352,8 +379,20 @@ public struct MediaType: Sendable, Hashable, Codable, CustomStringConvertible {
         lhs.parameters == rhs.parameters
     }
     
+    public static func < (lhs: Self, rhs: Self) -> Bool {
+        if lhs.type < rhs.type {
+            return true
+        }
+        else if lhs.type > rhs.type {
+            return false
+        }
+        else {
+            return lhs.description.caseInsensitiveCompare(rhs.description) == .orderedAscending
+        }
+    }
+    
     private mutating func didUpdate() {
-        var description = "\(type)/\(subtype)"
+        var description = basicType
         
         if parameters.count > 0 {
             description += "; \(parameters.map(\.description).joined(separator: "; "))"
@@ -387,6 +426,11 @@ public struct MediaType: Sendable, Hashable, Codable, CustomStringConvertible {
     /// - Returns: value of parameter with given name or nil otherwise
     public func parameterValue(for name: String) -> String? {
         return parameters.first(where: { $0.has(name: name) })?.value
+    }
+    
+    /// returns a string representation of the media type without parameters.
+    public var basicType: String {
+        return "\(type)/\(subtype)"
     }
     
     /// returns the `String.Encoding` for the `charset` parameter.

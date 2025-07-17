@@ -17,9 +17,13 @@
 import UniformTypeIdentifiers
 
 public extension UTType {
-    private static var magic: Magic {
-        return .init(definitions: .default, .system, .builtin)!
-    }
+    private static var magic: Magic = {
+        guard let magic = Magic(definitions: .default, .system, .builtin) else {
+            fatalError("Can't initialize Magic for UTType.")
+        }
+        
+        return magic
+    }()
 
     /// create a type given a file path, by determining the MIME type of the file.
     /// - Parameter data: a data object

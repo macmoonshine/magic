@@ -21,11 +21,27 @@ import UniformTypeIdentifiers
 
 final class AlphabetTests: XCTestCase {
     func testUTType() throws {
-        let type = UTType(data: "{}".data(using: .utf8)!)
+        let data = "{}".data(using: .utf8)!
+        let type = UTType(data: data)
         
         XCTAssertNotEqual(type, nil)
         XCTAssertEqual(type?.identifier, "public.json")
         XCTAssertEqual(type?.preferredMIMEType, "application/json")
+        XCTAssertNotEqual(data.uniformTypeIdentifier, nil)
+        XCTAssertEqual(data.uniformTypeIdentifier?.identifier, "public.json")
+        XCTAssertEqual(data.uniformTypeIdentifier?.preferredMIMEType, "application/json")
+    }
+    
+    func testMediaType() throws {
+        let data = "{}".data(using: .utf8)!
+        let type = MediaType(data: data)
+        
+        XCTAssertNotEqual(type, nil)
+        XCTAssertEqual(type?.type, "application")
+        XCTAssertEqual(type?.subtype, "json")
+        XCTAssertNotEqual(data.mediaType, nil)
+        XCTAssertEqual(data.mediaType?.type, "application")
+        XCTAssertEqual(data.mediaType?.subtype, "json")
     }
     
     func testMainType() throws {

@@ -1,12 +1,9 @@
 # Magic
 
-This library is a Swift wrapper to [libmagic(3)](https://github.com/file/file). 
-which allows the determination of the file type based on the file content and
-is part of [file(1)](https://www.darwinsys.com/file/) command. This 
-implementation is based on Apple's adaptation of libmagic for macOS.
+This library allows you to determine the MIME type or UTType for any data  and is a Swift wrapper for [libmagic(3)](https://github.com/file/file) which is part of [file(1)](https://www.darwinsys.com/file/) command. This implementation is based on Apple's adaptation of libmagic for macOS.
 
 * Sources for libmagic: <https://github.com/apple-opensource/file>
-* Home page: <https://www.darwinsys.com/file/>
+* Home page for file: <https://www.darwinsys.com/file/>
 
 ## Installation
 

@@ -60,7 +60,7 @@ FILE_RCSID("@(#)$File: magic.c,v 1.112 2020/06/08 19:44:10 christos Exp $")
 #include <unistd.h>	/* for read() */
 #endif
 
-#ifdef __APPLE__
+#if defined(__APPLE__) && !__is_target_os(ios)
 #include "get_compat.h"
 #else
 #define COMPAT_MODE(func, mode) 1

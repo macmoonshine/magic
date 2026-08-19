@@ -29,8 +29,6 @@ public class Magic {
         case environment
         /// explicit specification of a path
         case path(String)
-        /// definition used by system (file command)
-        case system
         
         /// create a `.path` by a string literal.
         /// - Parameter value: a path to a definition file
@@ -52,9 +50,7 @@ public class Magic {
             
             switch self {
             case .builtin:
-                let bundle = Bundle(for: Magic.self)
-
-                return bundle.path(forResource: "magic", ofType: "mgc")
+                return Bundle.module.path(forResource: "magic", ofType: "mgc")
             case .environment:
                 let path = ProcessInfo.processInfo.environment["MAGIC"]
                 
@@ -65,8 +61,6 @@ public class Magic {
                 return existingFile(path)
             case .path(let path):
                 return path
-            case .system:
-                return existingFile(Magic.systemMagicFile)
             }
         }
     }

@@ -18,7 +18,7 @@ import UniformTypeIdentifiers
 
 public extension UTType {
     private static var magic: Magic = {
-        guard let magic = Magic(definitions: .default, .system, .builtin) else {
+        guard let magic = Magic(definitions: .default, .builtin) else {
             fatalError("Can't initialize Magic for UTType.")
         }
         

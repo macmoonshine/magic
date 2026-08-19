@@ -1,0 +1,7 @@
+module libmagic {
+    umbrella header "magic.h"
+    export *
+    module * { export * }
+    link "z"
+    link "bz2"
+}

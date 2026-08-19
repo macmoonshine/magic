@@ -1,9 +1,24 @@
 # Magic
 
-This library allows you to determine the MIME type or UTType for any data  and is a Swift wrapper for [libmagic(3)](https://github.com/file/file) which is part of [file(1)](https://www.darwinsys.com/file/) command. This implementation is based on Apple's adaptation of libmagic for macOS.
+This library allows you to determine the MIME type or UTType for any data  and is a Swift wrapper for [libmagic(3)](https://github.com/file/file) which is part of [file(1)](https://www.darwinsys.com/file/) command.
 
 * Sources for libmagic: <https://github.com/apple-opensource/file>
 * Home page for file: <https://www.darwinsys.com/file/>
+
+## Building libmagic
+
+The C sources of libmagic are not part of this repository. A
+[`Makefile`](Makefile) downloads, compiles and bundles them into the
+[`libmagic.xcframework`](Frameworks/libmagic.xcframework) and compiles the
+`magic.mgc` definitions file into [`Sources/Magic/Resources`](Sources/Magic/Resources).
+
+The `Makefile` should be executed only if you wish to use a new version of
+libmagic. To do so, update the version number in
+[`libmagic.version`](libmagic.version) and run `make`:
+
+```sh
+make
+```
 
 ## Installation
 
@@ -115,6 +130,14 @@ let mediaType = MediaType(
 let headers = ["Content-Type": mediaType.description]
 ```
 
+## Breaking Changes
+
+### Version 1.1
+
+`Magic.Definition.system` — the definition file of the system's `file` command
+— was removed in version 1.1. Use `.builtin` instead, which uses the magic
+definitions bundled with this package.
+
 ## License
 
 Copyright 2025 macoonshine
@@ -130,3 +153,37 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+
+The bundled `libmagic` (`Frameworks/libmagic.xcframework` and
+`Sources/Magic/Resources/magic.mgc`) is derived from `file(1)` and subject to
+its own copyright and license:
+
+Copyright (c) Ian F. Darwin 1986, 1987, 1989, 1990, 1991, 1992, 1994, 1995.
+Software written by Ian F. Darwin and others;
+maintained 1994- Christos Zoulas.
+
+This software is not subject to any export provision of the United States
+Department of Commerce, and may be exported to any country or planet.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+
+1. Redistributions of source code must retain the above copyright notice
+   immediately at the beginning of the file, without modification, this
+   list of conditions, and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions and the following disclaimer in the
+   documentation and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.

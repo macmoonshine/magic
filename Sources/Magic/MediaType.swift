@@ -448,7 +448,7 @@ public struct MediaType: Sendable, Hashable, Codable, Comparable, CustomStringCo
 public extension MediaType {
     private static var magic: Magic = {
         guard let magic = Magic(
-            flags: .mime, definitions: .default, .system, .builtin
+            flags: .mime, definitions: .default, .builtin
         ) else {
             fatalError("Can't initialize Magic for MediaType.")
         }

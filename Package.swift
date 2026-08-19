@@ -19,24 +19,15 @@ let package = Package(
         ),
     ],
     targets: [
-        .target(
+        .binaryTarget(
             name: "libmagic",
-            publicHeadersPath: "include",
-            cSettings: [
-                .headerSearchPath("include"),
-                .define("HAVE_CONFIG_H"),
-                .define("MAGIC", to: "\"/usr/share/file/magic.mgc\"")
-            ],
-            linkerSettings: [
-                .linkedLibrary("bz2"),
-                .linkedLibrary("z")
-            ]
+			path: "Frameworks/libmagic.xcframework"
         ),
         .target(
             name: "Magic",
             dependencies: ["libmagic"],
             resources: [
-                .process("magic.mgc")
+                .copy("Resources/magic.mgc")
             ]
         ),
         .testTarget(

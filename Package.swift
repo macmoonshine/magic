@@ -27,7 +27,8 @@ let package = Package(
             name: "Magic",
             dependencies: ["libmagic"],
             resources: [
-                .copy("Resources/magic.mgc")
+                .copy("Resources/magic.mgc"),
+                .copy("Resources/version")
             ]
         ),
         .testTarget(

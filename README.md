@@ -12,12 +12,18 @@ The C sources of libmagic are not part of this repository. A
 [`libmagic.xcframework`](Frameworks/libmagic.xcframework) and compiles the
 `magic.mgc` definitions file into [`Sources/Magic/Resources`](Sources/Magic/Resources).
 
-The `Makefile` should be executed only if you wish to use a new version of
+The `Makefile` should be executed only if you wish to use another version of
 libmagic. To do so, update the version number in
 [`libmagic.version`](libmagic.version) and run `make`:
 
 ```sh
 make
+```
+
+Alternatively, you can also pass the version to `make` using the `VERSION` variable:
+
+```sh
+make VERSION=5.48
 ```
 
 ## Installation

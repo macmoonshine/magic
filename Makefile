@@ -11,7 +11,7 @@ ARCHIVE_FILE  := $(BUILD)/$(ARCHIVE)
 
 DIST          := $(ROOT)/Frameworks
 XCFRAMEWORK   := $(DIST)/libmagic.xcframework
-PACKAGE_RES   := $(ROOT)/Sources/Magic/Resources/magic.mgc
+RESOURCES_DIR := $(ROOT)/Sources/Magic/Resources
 
 JOBS          ?= $(shell sysctl -n hw.ncpu)
 
@@ -32,10 +32,10 @@ IOS_ARCHS     := arm64
 SIM_ARCHS     := arm64
 MACOS_ARCHS   := arm64
 
-HOST_BUILD := $(BUILD)/host
-HOST_FILE  := $(HOST_BUILD)/src/file
-HOST_STAMP := $(HOST_BUILD)/.build-stamp
-MAGIC_MGC  := $(BUILD)/magic.mgc
+HOST_BUILD    := $(BUILD)/host
+HOST_FILE     := $(HOST_BUILD)/src/file
+HOST_STAMP    := $(HOST_BUILD)/.build-stamp
+MAGIC_MGC     := $(BUILD)/magic.mgc
 
 .PHONY: all download source ios ios-simulator macos \
         libmagic magic xcframework clean distclean
@@ -174,13 +174,15 @@ xcframework: libmagic magic
 		-headers "$(BUILD)/universal/macos/include" \
 		-output "$(XCFRAMEWORK)"
 
-	@mkdir -p "$(dir $(PACKAGE_RES))"
-	@cp "$(MAGIC_MGC)" "$(PACKAGE_RES)"
+	@mkdir -p "$(dir $(RESOURCES_DIR))"
+	@cp "$(MAGIC_MGC)" "$(RESOURCES_DIR)/magic.mgc"
+	@echo $(VERSION) > "$(RESOURCES_DIR)/version"
 
 	@echo "Version: $(VERSION)"
 	@echo "Created:"
 	@echo "  $(XCFRAMEWORK)"
-	@echo "  $(PACKAGE_RES)"
+	@echo "  $(RESOURCES_DIR)/magic.mgc"
+	@echo "  $(RESOURCES_DIR)/version"
 
 clean:
 	rm -rf "$(BUILD)"

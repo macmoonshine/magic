@@ -1,5 +1,12 @@
 # Magic
 
+[![Magic tests](https://github.com/macmoonshine/magic/actions/workflows/swift.yml/badge.svg)](https://github.com/macmoonshine/magic/actions/workflows/swift.yml)
+[![Swift](https://img.shields.io/badge/Swift-5.10%2B-orange?logo=swift)](https://swift.org)
+[![Platforms](https://img.shields.io/badge/platforms-iOS%2015%2B%20%7C%20macOS%2011%2B-blue?logo=apple)](https://github.com/macmoonshine/magic/blob/main/Package.swift)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue)](https://github.com/macmoonshine/magic/blob/main/LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues/macmoonshine/magic)](https://github.com/macmoonshine/magic/issues)
+[![GitHub stars](https://img.shields.io/github/stars/macmoonshine/magic)](https://github.com/macmoonshine/magic/stargazers)
+
 This library allows you to determine the MIME type or UTType for any data  and is a Swift wrapper for [libmagic(3)](https://github.com/file/file) which is part of [file(1)](https://www.darwinsys.com/file/) command.
 
 * Sources for libmagic: <https://github.com/apple-opensource/file>
